@@ -3,10 +3,11 @@ import React from "react";
 import { PaperProvider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { Quote } from "./Quote";
+import { theme } from "./theme";
 
 export default function App() {
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <View style={styles.container}>
         <Quote />
         <StatusBar style="auto" />
