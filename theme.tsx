@@ -5,5 +5,6 @@ export const theme = {
   colors: {
     primary: "#3E5622",
     secondary: "#709255",
+    surfaceVariant: "white",
   },
 };
