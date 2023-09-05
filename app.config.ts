@@ -1,8 +1,8 @@
 import { ClientEnv, Env } from "./.env";
 
 module.exports = {
-  name: "AwesomeProject",
-  slug: "AwesomeProject",
+  name: "DailyQuotes",
+  slug: "DailyQuotes",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icon.png",
