@@ -34,4 +34,4 @@ daily(() => {
   determineQuoteOfTheDay();
 });
 
-everyMinute(() => determineQuoteOfTheDay());
+// everyMinute(() => determineQuoteOfTheDay());
