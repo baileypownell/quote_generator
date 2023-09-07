@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Text, View, Linking, ImageBackground } from "react-native";
 import axios from "axios";
 import { Button, useTheme } from "react-native-paper";
-import Constants from "expo-constants";
 
 type Quote = {
   quote: string;
@@ -15,33 +14,39 @@ export const Quote = () => {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [backgroundImage, setBackgroundImage] = useState<any>();
 
-  const fetchQuote = async () => {
-    return await axios.get("https://api.api-ninjas.com/v1/quotes", {
-      headers: { "X-Api-Key": "le8onx1k4AYN0HIVuXX8lg==JbiSdCGpXxqciIQq" },
-    });
-  };
+  // const fetchQuote = async () => {
+  //   return await axios.get("https://api.api-ninjas.com/v1/quotes", {
+  //     headers: { "X-Api-Key": "le8onx1k4AYN0HIVuXX8lg==JbiSdCGpXxqciIQq" },
+  //   });
+  // };
 
-  const fetchAuthorImage = async (authorName: string) => {
-    return await axios.get(
-      `https://customsearch.googleapis.com/customsearch/v1?key=${Constants.expoConfig.extra.GOOGLE_SEARCH_API_KEY}&cx=${Constants.expoConfig.extra.GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}
-        &num=1&searchType=image`
-    );
-  };
+  // const fetchAuthorImage = async (authorName: string) => {
+  //   return await axios.get(
+  //     `https://customsearch.googleapis.com/customsearch/v1?key=${Constants.expoConfig.extra.GOOGLE_SEARCH_API_KEY}&cx=${Constants.expoConfig.extra.GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}
+  //       &num=1&searchType=image`
+  //   );
+  // };
 
   const initialize = async () => {
-    const quoteResult = await fetchQuote();
-
-    if (quoteResult.status === 200) {
-      setQuote(quoteResult.data[0]);
-
-      const authorImageResult = await fetchAuthorImage(
-        quoteResult.data[0].author
-      );
-
-      if (authorImageResult.status === 200) {
-        setBackgroundImage(authorImageResult.data.items[0]);
-      }
+    try {
+      const testResult = await axios.get("http://localhost:8000/quote");
+      console.log('testResult: ', testResult)
+    } catch (e) {
+      console.log(e);
     }
+    // const quoteResult = await fetchQuote();
+
+    // if (quoteResult.status === 200) {
+    //   setQuote(quoteResult.data[0]);
+
+    //   const authorImageResult = await fetchAuthorImage(
+    //     quoteResult.data[0].author
+    //   );
+
+    //   if (authorImageResult.status === 200) {
+    //     setBackgroundImage(authorImageResult.data.items[0]);
+    //   }
+    // }
   };
 
   useEffect(() => {
