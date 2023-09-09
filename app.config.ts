@@ -1,4 +1,4 @@
-import { ClientEnv, Env } from "./.env";
+// import { ClientEnv } from "./.env";
 
 module.exports = {
   name: "DailyQuotes",
@@ -15,7 +15,6 @@ module.exports = {
   assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,
-    // bundleIdentifier: Env.BUNDLE_ID,
   },
   android: {
     adaptiveIcon: {
@@ -26,7 +25,7 @@ module.exports = {
   web: {
     favicon: "./assets/favicon.png",
   },
-  extra: {
-    ...ClientEnv,
-  },
+  // extra: {
+  //   ...ClientEnv,
+  // },
 };

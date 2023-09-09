@@ -14,39 +14,19 @@ export const Quote = () => {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [backgroundImage, setBackgroundImage] = useState<any>();
 
-  // const fetchQuote = async () => {
-  //   return await axios.get("https://api.api-ninjas.com/v1/quotes", {
-  //     headers: { "X-Api-Key": "le8onx1k4AYN0HIVuXX8lg==JbiSdCGpXxqciIQq" },
-  //   });
-  // };
-
-  // const fetchAuthorImage = async (authorName: string) => {
-  //   return await axios.get(
-  //     `https://customsearch.googleapis.com/customsearch/v1?key=${Constants.expoConfig.extra.GOOGLE_SEARCH_API_KEY}&cx=${Constants.expoConfig.extra.GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}
-  //       &num=1&searchType=image`
-  //   );
-  // };
-
   const initialize = async () => {
     try {
-      const testResult = await axios.get("http://localhost:8000/quote");
-      console.log('testResult: ', testResult)
+      const quoteResult = await axios.get("http://localhost:8000/quote");
+      console.log("testResult: ", quoteResult);
+
+      if (quoteResult.status === 200) {
+        setQuote(quoteResult.data.todaysQuote);
+        console.log("setting to: ", quoteResult.data.authorImage);
+        setBackgroundImage(quoteResult.data.authorImage);
+      }
     } catch (e) {
       console.log(e);
     }
-    // const quoteResult = await fetchQuote();
-
-    // if (quoteResult.status === 200) {
-    //   setQuote(quoteResult.data[0]);
-
-    //   const authorImageResult = await fetchAuthorImage(
-    //     quoteResult.data[0].author
-    //   );
-
-    //   if (authorImageResult.status === 200) {
-    //     setBackgroundImage(authorImageResult.data.items[0]);
-    //   }
-    // }
   };
 
   useEffect(() => {
@@ -59,7 +39,7 @@ export const Quote = () => {
 
   return (
     <ImageBackground
-      source={{ uri: backgroundImage.link }}
+      source={{ uri: backgroundImage }}
       style={{
         alignItems: "flex-start",
         width: "100%",
@@ -84,11 +64,6 @@ export const Quote = () => {
           <Text style={{ fontSize: 18 }}>- {quote.author}</Text>
         </View>
       </View>
-
-      {/* <Image
-        style={{ width: 50, height: 50 }}
-        source={{ uri: backgroundImage.link }}
-      /> */}
 
       <Button
         textColor={theme.colors.surfaceVariant}

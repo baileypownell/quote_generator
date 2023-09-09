@@ -5,8 +5,10 @@ const todaysQuote = new Quote();
 
 const fetchQuote = async () => {
   try {
+    const env = await load();
+    const APININJAS_API_KEY = env["APININJAS_API_KEY"];
     const quoteResponse = await fetch("https://api.api-ninjas.com/v1/quotes", {
-      headers: { "X-Api-Key": "le8onx1k4AYN0HIVuXX8lg==JbiSdCGpXxqciIQq" },
+      headers: { "X-Api-Key": APININJAS_API_KEY },
     });
     const result = await quoteResponse.json();
     if (result.message === "Internal server error") {
@@ -23,21 +25,29 @@ const fetchAuthorImage = async (authorName: string) => {
   const GOOGLE_SEARCH_API_KEY = env["GOOGLE_SEARCH_API_KEY"];
   const GOOGLE_SEARCH_ENGINE_ID = env["GOOGLE_SEARCH_ENGINE_ID"];
 
-  return await fetch(
+  const imageResponse = await fetch(
     `https://customsearch.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}&num=1&searchType=image`
   );
+
+  const result = await imageResponse.json();
+  return result;
 };
 
 const determineQuoteOfTheDay = async () => {
   try {
     const quoteOfTheDay = await fetchQuote();
+    const selectedQuote = quoteOfTheDay[0];
     if (quoteOfTheDay) {
-      todaysQuote.setQuote(quoteOfTheDay);
+      const authorImageResult = await fetchAuthorImage(selectedQuote.author);
+      if (authorImageResult) {
+        todaysQuote.setQuote(selectedQuote);
+        todaysQuote.setAuthorImage(authorImageResult.items[0].link);
+      } else {
+        throw new Error("No quote of the day");
+      }
     } else {
       throw new Error("No quote of the day");
     }
-
-    // const authorImage = fetchAuthorImage();
   } catch (error) {
     // learn how to handle errors in deno
     console.log(error);
@@ -49,17 +59,23 @@ daily(() => {
   determineQuoteOfTheDay();
 });
 
-const handler = (request: Request): Response => {
+const handler = (request: Request): any => {
   if (request.url.includes("/quote")) {
     if (!todaysQuote.getQuote()) {
       return new Response("No quote", { status: 500 });
     }
-    return new Response(JSON.stringify(todaysQuote.getQuote()), {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        todaysQuote: todaysQuote.getQuote(),
+        authorImage: todaysQuote.getAuthorImage(),
+      }),
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   } else {
     return new Response(`${request.url} not found`, {
       status: 404,
