@@ -26,7 +26,7 @@ const fetchAuthorImage = async (authorName: string) => {
   const GOOGLE_SEARCH_ENGINE_ID = env["GOOGLE_SEARCH_ENGINE_ID"];
 
   const imageResponse = await fetch(
-    `https://customsearch.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}&num=1&searchType=image`
+    `https://customsearch.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}&num=1&searchType=image&imgSize=xlarge`
   );
 
   const result = await imageResponse.json();

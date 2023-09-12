@@ -1,5 +1,3 @@
-// import { ClientEnv } from "./.env";
-
 module.exports = {
   name: "DailyQuotes",
   slug: "DailyQuotes",

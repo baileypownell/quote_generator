@@ -4,8 +4,18 @@ import { PaperProvider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { Quote } from "./Quote";
 import { theme } from "./theme";
+import { useFonts } from "expo-font";
+
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "DM Serif Display": require("./assets/fonts/DMSerifDisplay-Regular.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <PaperProvider theme={theme}>
       <View style={styles.container}>
