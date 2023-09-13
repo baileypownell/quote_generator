@@ -1,13 +1,44 @@
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Image, Linking, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  Text,
+  View,
+  Platform,
+  ImageBackground,
+} from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
 type Quote = {
   quote: string;
   author: string;
   category: string;
+};
+
+const generateBoxShadowStyles = () => {
+  console.log(Platform);
+  if (Platform.OS === "ios") {
+    return {
+      shadowColor: "#5D4954",
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.46,
+      shadowRadius: 11.14,
+    };
+  } else if (Platform.OS === "android") {
+    return {
+      elevation: 17,
+      shadowColor: "#5D4954",
+    };
+  } else if (Platform.OS === "web") {
+    return {
+      shadowOffset: { width: 5, height: 5 },
+      shadowColor: "#5D4954",
+      shadowOpacity: 0.46,
+      shadowRadius: 11.14,
+    };
+  }
 };
 
 export const Quote = () => {
@@ -41,24 +72,38 @@ export const Quote = () => {
       style={{
         width: "100%",
         height: "100%",
-        // background: "#3A3335",
-        // background: "#F5F4F5",
         background: "#FDE8E9",
-        padding: 20,
+        padding: 40,
         paddingTop: 100,
       }}
     >
-      <View style={{ width: "100%", height: "100%", alignItems: "flex-start" }}>
-        <Text
+      <View
+        style={{
+          width: "100%",
+          height: "100%",
+          alignItems: "flex-start",
+          paddingBottom: "30px",
+        }}
+      >
+        <View
           style={{
-            fontSize: 24,
-            // color: "#3A3335",
-            color: "#5D4954",
-            fontFamily: "DM Serif Display, serif",
+            width: "100%",
+            paddingBottom: "15px",
+            marginBottom: "15px",
+            borderBottom: "5px solid #5D4954",
+            borderRadius: "5px",
           }}
         >
-          Quote of the Day
-        </Text>
+          <Text
+            style={{
+              fontSize: 24,
+              color: "#5D4954",
+              fontFamily: "Maven Pro, sans-serif",
+            }}
+          >
+            Quote of the Day
+          </Text>
+        </View>
         <View
           style={{
             padding: 20,
@@ -71,21 +116,20 @@ export const Quote = () => {
               style={{
                 paddingTop: 15,
                 paddingBottom: 30,
+                display: "flex",
+                flexDirection: "row",
               }}
             >
-
               <View
                 style={[
                   {
-                    transform: 'scaleX(-1)',
+                    transform: "scaleX(-1)",
+                    marginRight: "30px",
+                    marginTop: "-20px",
                   },
                 ]}
               >
-                <Entypo
-                  name="quote"
-                  size={50}
-                  color="#5D4954"
-                />
+                <Entypo name="quote" size={50} color="#5D4954" />
               </View>
               <Text
                 style={{
@@ -93,33 +137,67 @@ export const Quote = () => {
                   color: "#5D4954",
                   fontFamily: "DM Serif Display, serif",
                   lineHeight: "1.5",
-                  fontWeight: undefined,
+                  textAlign: "center",
                 }}
               >
                 {quote.quote}
               </Text>
-              <Entypo name="quote" size={50} color="#5D4954" />
+              <View
+                style={{
+                  marginBottom: "-20px",
+                  flexDirection: "row",
+                  display: "flex",
+                  alignItems: "self-end",
+                }}
+              >
+                <Entypo name="quote" size={50} color="#5D4954" />
+              </View>
             </View>
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: "column",
                 alignItems: "center",
                 paddingTop: "20px",
               }}
             >
-              <Image
-                style={{ width: "250px", height: "250px", borderRadius: "50%" }}
+              {/* <Image
+                style={{
+                  width: "250px",
+                  height: "250px",
+                  borderRadius: "50%",
+                  marginBottom: "15px",
+                }}
                 source={{ uri: backgroundImage }}
-              ></Image>
+              ></Image> */}
+
+              <View
+                style={{
+                  marginBottom: "15px",
+                  borderRadius: "50%",
+                  ...generateBoxShadowStyles(),
+                }}
+              >
+                <ImageBackground
+                  source={backgroundImage}
+                  resizeMode="cover"
+                  style={{
+                    width: "250px",
+                    height: "250px",
+                  }}
+                  imageStyle={{
+                    borderRadius: "50%",
+                  }}
+                ></ImageBackground>
+              </View>
 
               <Text
                 style={{
                   fontSize: 30,
-                  // color: "#3A3335",
                   color: "#5D4954",
                   marginLeft: "15px",
                   fontFamily: "DM Serif Display, serif",
+                  fontStyle: "italic",
                 }}
               >
                 {quote.author}
@@ -132,8 +210,8 @@ export const Quote = () => {
           textColor={theme.colors.surfaceVariant}
           style={{
             backgroundColor: "#754F5B",
+            ...generateBoxShadowStyles(),
           }}
-          elevation={5}
           icon="google"
           theme={{ roundness: 3 }}
           accessibilityLabel={`Learn More about ${quote.author}`}
