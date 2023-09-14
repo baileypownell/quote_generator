@@ -121,13 +121,11 @@ export const Quote = () => {
               }}
             >
               <View
-                style={[
-                  {
-                    transform: "scaleX(-1)",
-                    marginRight: "30px",
-                    marginTop: "-20px",
-                  },
-                ]}
+                style={{
+                  transform: "scaleX(-1)",
+                  marginRight: "30px",
+                  marginTop: "-20px",
+                }}
               >
                 <Entypo name="quote" size={50} color="#5D4954" />
               </View>
@@ -145,6 +143,7 @@ export const Quote = () => {
               <View
                 style={{
                   marginBottom: "-20px",
+                  marginLeft: "30px",
                   flexDirection: "row",
                   display: "flex",
                   alignItems: "self-end",
