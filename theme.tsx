@@ -3,8 +3,8 @@ import { DefaultTheme } from "react-native-paper";
 export const theme = {
   ...DefaultTheme,
   colors: {
-    primary: "#3E5622",
-    secondary: "#709255",
+    primary: "#FDE8E9",
+    secondary: "#5D4954",
     surfaceVariant: "white",
   },
 };

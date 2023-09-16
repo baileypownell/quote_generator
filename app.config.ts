@@ -21,7 +21,7 @@ module.exports = {
     },
   },
   web: {
-    favicon: "./assets/favicon.png",
+    // favicon: "./assets/favicon.png",
   },
   // extra: {
   //   ...ClientEnv,

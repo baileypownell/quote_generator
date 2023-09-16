@@ -1,15 +1,8 @@
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  Linking,
-  Text,
-  View,
-  Platform,
-  ImageBackground,
-} from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Text, View, Platform, ImageBackground, Image } from "react-native";
+import { useTheme, ActivityIndicator, MD3LightTheme } from "react-native-paper";
 
 type Quote = {
   quote: string;
@@ -17,11 +10,10 @@ type Quote = {
   category: string;
 };
 
-const generateBoxShadowStyles = () => {
-  console.log(Platform);
+const generateBoxShadowStyles = (theme: MD3LightTheme) => {
   if (Platform.OS === "ios") {
     return {
-      shadowColor: "#5D4954",
+      shadowColor: theme.colors.secondary,
       shadowOffset: { width: 0, height: 8 },
       shadowOpacity: 0.46,
       shadowRadius: 11.14,
@@ -29,12 +21,12 @@ const generateBoxShadowStyles = () => {
   } else if (Platform.OS === "android") {
     return {
       elevation: 17,
-      shadowColor: "#5D4954",
+      shadowColor: theme.colors.secondary,
     };
   } else if (Platform.OS === "web") {
     return {
       shadowOffset: { width: 5, height: 5 },
-      shadowColor: "#5D4954",
+      shadowColor: theme.colors.secondary,
       shadowOpacity: 0.46,
       shadowRadius: 11.14,
     };
@@ -45,6 +37,7 @@ export const Quote = () => {
   const theme = useTheme();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [backgroundImage, setBackgroundImage] = useState<any>();
+  const [error, setError] = useState(false);
 
   const initialize = async () => {
     try {
@@ -53,9 +46,12 @@ export const Quote = () => {
       if (quoteResult.status === 200) {
         setQuote(quoteResult.data.todaysQuote);
         setBackgroundImage(quoteResult.data.authorImage);
+      } else {
+        setError(true);
       }
     } catch (e) {
       console.log(e);
+      setError(true);
     }
   };
 
@@ -64,7 +60,34 @@ export const Quote = () => {
   }, []);
 
   if (!quote || !backgroundImage) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" animating={true} color={theme.colors.secondary} />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View
+        style={{
+          background: theme.colors.primary,
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 30,
+            color: theme.colors.secondary,
+            fontFamily: "Maven Pro, sans-serif",
+          }}
+        >
+          Yikes. There was an error.
+        </Text>
+      </View>
+    );
   }
 
   return (
@@ -72,7 +95,7 @@ export const Quote = () => {
       style={{
         width: "100%",
         height: "100%",
-        background: "#FDE8E9",
+        background: theme.colors.primary,
         padding: 40,
         paddingTop: 100,
       }}
@@ -90,14 +113,14 @@ export const Quote = () => {
             width: "100%",
             paddingBottom: "15px",
             marginBottom: "15px",
-            borderBottom: "5px solid #5D4954",
+            borderBottom: `5px solid ${theme.colors.secondary}`,
             borderRadius: "5px",
           }}
         >
           <Text
             style={{
               fontSize: 24,
-              color: "#5D4954",
+              color: theme.colors.secondary,
               fontFamily: "Maven Pro, sans-serif",
             }}
           >
@@ -127,12 +150,16 @@ export const Quote = () => {
                   marginTop: "-20px",
                 }}
               >
-                <Entypo name="quote" size={50} color="#5D4954" />
+                <Entypo
+                  name="quote"
+                  size={50}
+                  color={theme.colors.secondary}
+                />
               </View>
               <Text
                 style={{
                   fontSize: 38,
-                  color: "#5D4954",
+                  color: theme.colors.secondary,
                   fontFamily: "DM Serif Display, serif",
                   lineHeight: "1.5",
                   textAlign: "center",
@@ -149,7 +176,11 @@ export const Quote = () => {
                   alignItems: "self-end",
                 }}
               >
-                <Entypo name="quote" size={50} color="#5D4954" />
+                <Entypo
+                  name="quote"
+                  size={50}
+                  color={theme.colors.secondary}
+                />
               </View>
             </View>
 
@@ -160,21 +191,11 @@ export const Quote = () => {
                 paddingTop: "20px",
               }}
             >
-              {/* <Image
-                style={{
-                  width: "250px",
-                  height: "250px",
-                  borderRadius: "50%",
-                  marginBottom: "15px",
-                }}
-                source={{ uri: backgroundImage }}
-              ></Image> */}
-
               <View
                 style={{
                   marginBottom: "15px",
                   borderRadius: "50%",
-                  ...generateBoxShadowStyles(),
+                  ...generateBoxShadowStyles(theme),
                 }}
               >
                 <ImageBackground
@@ -193,7 +214,7 @@ export const Quote = () => {
               <Text
                 style={{
                   fontSize: 30,
-                  color: "#5D4954",
+                  color: theme.colors.secondary,
                   marginLeft: "15px",
                   fontFamily: "DM Serif Display, serif",
                   fontStyle: "italic",
@@ -205,7 +226,7 @@ export const Quote = () => {
           </View>
         </View>
 
-        <Button
+        {/* <Button
           textColor={theme.colors.surfaceVariant}
           style={{
             backgroundColor: "#754F5B",
@@ -220,7 +241,7 @@ export const Quote = () => {
           }
         >
           {`${quote.author}`}
-        </Button>
+        </Button> */}
       </View>
     </View>
   );
