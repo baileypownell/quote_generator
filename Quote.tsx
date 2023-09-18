@@ -1,7 +1,13 @@
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, View, Platform, ImageBackground } from "react-native";
+import {
+  Text,
+  View,
+  Platform,
+  ImageBackground,
+  SafeAreaView,
+} from "react-native";
 import { useTheme, ActivityIndicator, MD3LightTheme } from "react-native-paper";
 
 type Quote = {
@@ -105,13 +111,11 @@ export const Quote = () => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         width: "100%",
         height: "100%",
-        background: theme.colors.primary,
-        padding: 40,
-        paddingTop: 100,
+        backgroundColor: theme.colors.primary,
       }}
     >
       <View
@@ -119,7 +123,9 @@ export const Quote = () => {
           width: "100%",
           height: "100%",
           alignItems: "flex-start",
-          paddingBottom: 30,
+          padding: 20,
+          paddingBottom: 10,
+          paddingTop: 15,
         }}
       >
         <View
@@ -127,7 +133,8 @@ export const Quote = () => {
             width: "100%",
             paddingBottom: 15,
             marginBottom: 15,
-            borderBottom: `5px solid ${theme.colors.secondary}`,
+            borderBottomWidth: 5,
+            borderBottomColor: theme.colors.secondary,
             borderRadius: 5,
           }}
         >
@@ -143,8 +150,7 @@ export const Quote = () => {
         </View>
         <View
           style={{
-            padding: 20,
-            paddingBottom: 80,
+            paddingTop: 20,
             flexGrow: 1,
             width: "100%",
             alignItems: "center",
@@ -153,11 +159,11 @@ export const Quote = () => {
           <View>
             <View
               style={{
+                width: '100%',
                 paddingTop: 15,
                 paddingBottom: 30,
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "center",
               }}
             >
               <View
@@ -167,15 +173,16 @@ export const Quote = () => {
                   marginTop: -20,
                 }}
               >
-                <Entypo name="quote" size={50} color={theme.colors.secondary} />
+                <Entypo name="quote" size={40} color={theme.colors.secondary} />
               </View>
               <Text
                 style={{
-                  fontSize: 38,
+                  fontSize: 30,
                   color: theme.colors.secondary,
                   fontFamily: "DM Serif Display",
-                  lineHeight: 1.5,
+                  lineHeight: 30 + 30 * 1.15,
                   textAlign: "center",
+                  flex: 1,
                 }}
               >
                 {quote.quote}
@@ -186,10 +193,10 @@ export const Quote = () => {
                   marginLeft: 30,
                   flexDirection: "row",
                   display: "flex",
-                  alignItems: "self-end",
+                  alignItems: "end",
                 }}
               >
-                <Entypo name="quote" size={50} color={theme.colors.secondary} />
+                <Entypo name="quote" size={40} color={theme.colors.secondary} />
               </View>
             </View>
 
@@ -203,7 +210,7 @@ export const Quote = () => {
               <View
                 style={{
                   marginBottom: 15,
-                  borderRadius: 250/2,
+                  borderRadius: 250 / 2,
                   ...generateBoxShadowStyles(theme),
                 }}
               >
@@ -215,7 +222,7 @@ export const Quote = () => {
                     height: 250,
                   }}
                   imageStyle={{
-                    borderRadius: 250/2,
+                    borderRadius: 250 / 2,
                   }}
                 ></ImageBackground>
               </View>
@@ -251,6 +258,6 @@ export const Quote = () => {
           {`${quote.author}`}
         </Button> */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

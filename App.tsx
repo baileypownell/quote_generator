@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { PaperProvider } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Quote } from "./Quote";
 import { theme } from "./theme";
 import { useFonts } from "expo-font";
@@ -19,10 +19,12 @@ export default function App() {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={styles.container}>
-        <Quote />
-        <StatusBar style="auto" />
-      </View>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <Quote />
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
     </PaperProvider>
   );
 }
