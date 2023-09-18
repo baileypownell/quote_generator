@@ -1,12 +1,11 @@
-import { daily, load } from "./deps.ts";
+import { daily } from "./deps.ts";
 import Quote from "./quote.ts";
 
 const todaysQuote = new Quote();
 
 const fetchQuote = async () => {
   try {
-    const env = await load();
-    const APININJAS_API_KEY = env["APININJAS_API_KEY"];
+    const APININJAS_API_KEY = Deno.env.get("APININJAS_API_KEY") as string;
     const quoteResponse = await fetch("https://api.api-ninjas.com/v1/quotes", {
       headers: { "X-Api-Key": APININJAS_API_KEY },
     });
@@ -21,9 +20,8 @@ const fetchQuote = async () => {
 };
 
 const fetchAuthorImage = async (authorName: string) => {
-  const env = await load();
-  const GOOGLE_SEARCH_API_KEY = env["GOOGLE_SEARCH_API_KEY"];
-  const GOOGLE_SEARCH_ENGINE_ID = env["GOOGLE_SEARCH_ENGINE_ID"];
+  const GOOGLE_SEARCH_API_KEY = Deno.env.get("GOOGLE_SEARCH_API_KEY");
+  const GOOGLE_SEARCH_ENGINE_ID = Deno.env.get("GOOGLE_SEARCH_ENGINE_ID");
 
   const imageResponse = await fetch(
     `https://customsearch.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}&num=1&searchType=image&imgSize=xlarge`
@@ -34,11 +32,10 @@ const fetchAuthorImage = async (authorName: string) => {
 };
 
 const determineQuoteOfTheDay = async () => {
-  console.log("determineQuoteOfTheDay()");
   try {
     const quoteOfTheDay = await fetchQuote();
     const selectedQuote = quoteOfTheDay[0];
-    if (quoteOfTheDay) {
+    if (quoteOfTheDay && !quoteOfTheDay.error) {
       const authorImageResult = await fetchAuthorImage(selectedQuote.author);
       if (authorImageResult) {
         todaysQuote.setQuote(selectedQuote);
@@ -47,7 +44,7 @@ const determineQuoteOfTheDay = async () => {
         throw new Error("No quote of the day");
       }
     } else {
-      throw new Error("No quote of the day");
+      throw new Error("No quote of the day could be determined");
     }
   } catch (error) {
     // learn how to handle errors in deno
@@ -57,14 +54,13 @@ const determineQuoteOfTheDay = async () => {
 
 determineQuoteOfTheDay();
 daily(() => {
-  console.log("daily()...");
   determineQuoteOfTheDay();
 });
 
 const handler = (request: Request): any => {
-  if (request.url.includes("/quote")) {
+  if (request.url.split("/")[3] === "quote") {
     if (!todaysQuote.getQuote()) {
-      return new Response("No quote", { status: 500 });
+      return new Response(`No quote`, { status: 500 });
     }
     return new Response(
       JSON.stringify({
@@ -79,7 +75,7 @@ const handler = (request: Request): any => {
       }
     );
   } else {
-    return new Response(`${request.url} not found`, {
+    return new Response(`${request.url} not found :)`, {
       status: 404,
       headers: {
         "Access-Control-Allow-Origin": "*",

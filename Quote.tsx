@@ -48,7 +48,9 @@ export const Quote = () => {
 
   const initialize = async () => {
     try {
-      const quoteResult = await axios.get("http://10.0.0.215:8000/quote");
+      const quoteResult = await axios.get(
+        "https://quotes-generator.deno.dev/quote"
+      );
 
       if (quoteResult.status === 200) {
         setQuote(quoteResult.data.todaysQuote);
@@ -159,7 +161,7 @@ export const Quote = () => {
           <View>
             <View
               style={{
-                width: '100%',
+                width: "100%",
                 paddingTop: 15,
                 paddingBottom: 30,
                 display: "flex",
