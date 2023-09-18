@@ -10,6 +10,7 @@ import { useFonts } from "expo-font";
 export default function App() {
   const [fontsLoaded] = useFonts({
     "DM Serif Display": require("./assets/fonts/DMSerifDisplay-Regular.ttf"),
+    "Maven Pro": require("./assets/fonts/MavenPro-VariableFont_wght.ttf"),
   });
 
   if (!fontsLoaded) {

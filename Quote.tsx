@@ -1,7 +1,7 @@
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, View, Platform, ImageBackground, Image } from "react-native";
+import { Text, View, Platform, ImageBackground } from "react-native";
 import { useTheme, ActivityIndicator, MD3LightTheme } from "react-native-paper";
 
 type Quote = {
@@ -37,15 +37,18 @@ export const Quote = () => {
   const theme = useTheme();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [backgroundImage, setBackgroundImage] = useState<any>();
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
   const initialize = async () => {
     try {
-      const quoteResult = await axios.get("http://localhost:8000/quote");
+      const quoteResult = await axios.get("http://10.0.0.215:8000/quote");
 
       if (quoteResult.status === 200) {
         setQuote(quoteResult.data.todaysQuote);
         setBackgroundImage(quoteResult.data.authorImage);
+        setLoaded(true);
+        setError(false);
       } else {
         setError(true);
       }
@@ -59,10 +62,21 @@ export const Quote = () => {
     initialize();
   }, []);
 
-  if (!quote || !backgroundImage) {
+  if (!loaded && !error) {
     return (
-      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-        <ActivityIndicator size="large" animating={true} color={theme.colors.secondary} />
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          backgroundColor: theme.colors.secondary,
+        }}
+      >
+        <ActivityIndicator
+          size="large"
+          animating={true}
+          color={theme.colors.primary}
+        />
       </View>
     );
   }
@@ -71,7 +85,7 @@ export const Quote = () => {
     return (
       <View
         style={{
-          background: theme.colors.primary,
+          backgroundColor: theme.colors.primary,
           alignItems: "center",
           justifyContent: "center",
           flex: 1,
@@ -81,7 +95,7 @@ export const Quote = () => {
           style={{
             fontSize: 30,
             color: theme.colors.secondary,
-            fontFamily: "Maven Pro, sans-serif",
+            fontFamily: "Maven Pro",
           }}
         >
           Yikes. There was an error.
@@ -105,23 +119,23 @@ export const Quote = () => {
           width: "100%",
           height: "100%",
           alignItems: "flex-start",
-          paddingBottom: "30px",
+          paddingBottom: 30,
         }}
       >
         <View
           style={{
             width: "100%",
-            paddingBottom: "15px",
-            marginBottom: "15px",
+            paddingBottom: 15,
+            marginBottom: 15,
             borderBottom: `5px solid ${theme.colors.secondary}`,
-            borderRadius: "5px",
+            borderRadius: 5,
           }}
         >
           <Text
             style={{
               fontSize: 24,
               color: theme.colors.secondary,
-              fontFamily: "Maven Pro, sans-serif",
+              fontFamily: "Maven Pro",
             }}
           >
             Quote of the Day
@@ -132,6 +146,8 @@ export const Quote = () => {
             padding: 20,
             paddingBottom: 80,
             flexGrow: 1,
+            width: "100%",
+            alignItems: "center",
           }}
         >
           <View>
@@ -141,27 +157,24 @@ export const Quote = () => {
                 paddingBottom: 30,
                 display: "flex",
                 flexDirection: "row",
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   transform: "scaleX(-1)",
-                  marginRight: "30px",
-                  marginTop: "-20px",
+                  marginRight: 30,
+                  marginTop: -20,
                 }}
               >
-                <Entypo
-                  name="quote"
-                  size={50}
-                  color={theme.colors.secondary}
-                />
+                <Entypo name="quote" size={50} color={theme.colors.secondary} />
               </View>
               <Text
                 style={{
                   fontSize: 38,
                   color: theme.colors.secondary,
-                  fontFamily: "DM Serif Display, serif",
-                  lineHeight: "1.5",
+                  fontFamily: "DM Serif Display",
+                  lineHeight: 1.5,
                   textAlign: "center",
                 }}
               >
@@ -169,18 +182,14 @@ export const Quote = () => {
               </Text>
               <View
                 style={{
-                  marginBottom: "-20px",
-                  marginLeft: "30px",
+                  marginBottom: -20,
+                  marginLeft: 30,
                   flexDirection: "row",
                   display: "flex",
                   alignItems: "self-end",
                 }}
               >
-                <Entypo
-                  name="quote"
-                  size={50}
-                  color={theme.colors.secondary}
-                />
+                <Entypo name="quote" size={50} color={theme.colors.secondary} />
               </View>
             </View>
 
@@ -188,25 +197,25 @@ export const Quote = () => {
               style={{
                 flexDirection: "column",
                 alignItems: "center",
-                paddingTop: "20px",
+                paddingTop: 20,
               }}
             >
               <View
                 style={{
-                  marginBottom: "15px",
-                  borderRadius: "50%",
+                  marginBottom: 15,
+                  borderRadius: 250/2,
                   ...generateBoxShadowStyles(theme),
                 }}
               >
                 <ImageBackground
-                  source={backgroundImage}
+                  source={{ uri: backgroundImage }}
                   resizeMode="cover"
                   style={{
-                    width: "250px",
-                    height: "250px",
+                    width: 250,
+                    height: 250,
                   }}
                   imageStyle={{
-                    borderRadius: "50%",
+                    borderRadius: 250/2,
                   }}
                 ></ImageBackground>
               </View>
@@ -215,9 +224,8 @@ export const Quote = () => {
                 style={{
                   fontSize: 30,
                   color: theme.colors.secondary,
-                  marginLeft: "15px",
-                  fontFamily: "DM Serif Display, serif",
-                  fontStyle: "italic",
+                  marginTop: 15,
+                  fontFamily: "Maven Pro",
                 }}
               >
                 {quote.author}
