@@ -171,18 +171,18 @@ export const Quote = () => {
               <View
                 style={{
                   transform: "scaleX(-1)",
-                  marginRight: 30,
+                  marginRight: 15,
                   marginTop: -20,
                 }}
               >
-                <Entypo name="quote" size={40} color={theme.colors.secondary} />
+                <Entypo name="quote" size={35} color={theme.colors.secondary} />
               </View>
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: 26,
                   color: theme.colors.secondary,
                   fontFamily: "DM Serif Display",
-                  lineHeight: 30 + 30 * 1.15,
+                  lineHeight: 26 + 26 * 0.75,
                   textAlign: "center",
                   flex: 1,
                 }}
@@ -192,13 +192,12 @@ export const Quote = () => {
               <View
                 style={{
                   marginBottom: -20,
-                  marginLeft: 30,
-                  flexDirection: "row",
+                  marginLeft: 15,
                   display: "flex",
-                  alignItems: "end",
+                  alignSelf: "flex-end",
                 }}
               >
-                <Entypo name="quote" size={40} color={theme.colors.secondary} />
+                <Entypo name="quote" size={35} color={theme.colors.secondary} />
               </View>
             </View>
 
