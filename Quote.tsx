@@ -9,6 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useTheme, ActivityIndicator, MD3LightTheme } from "react-native-paper";
+import Constants from "expo-constants";
 
 type Quote = {
   quote: string;
@@ -49,7 +50,7 @@ export const Quote = () => {
   const initialize = async () => {
     try {
       const quoteResult = await axios.get(
-        "https://quotes-generator.deno.dev/quote"
+        `https://${Constants.expoConfig.extra.SERVER_URL}/quote`
       );
 
       if (quoteResult.status === 200) {

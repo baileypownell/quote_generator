@@ -18,8 +18,7 @@ require("dotenv").config({
 // creating the schema
 const client = z.object({
   APP_ENV: z.enum(["development", "staging", "production"]),
-  GOOGLE_SEARCH_API_KEY: z.string(),
-  GOOGLE_SEARCH_ENGINE_ID: z.string(),
+  SERVER_URL: z.string(),
 });
 
 const buildTime = z.object({
@@ -33,8 +32,7 @@ const buildTime = z.object({
 const _clientEnv = {
   APP_ENV,
   // ADD YOUR ENV VARS HERE TOO
-  GOOGLE_SEARCH_API_KEY: process.env.GOOGLE_SEARCH_API_KEY,
-  GOOGLE_SEARCH_ENGINE_ID: process.env.GOOGLE_SEARCH_ENGINE_ID,
+  SERVER_URL: process.env.SERVER_URL,
 };
 
 /**

@@ -1,11 +1,12 @@
-import { daily } from "./deps.ts";
+import { daily, load } from "./deps.ts";
 import Quote from "./quote.ts";
 
 const todaysQuote = new Quote();
 
 const fetchQuote = async () => {
   try {
-    const APININJAS_API_KEY = Deno.env.get("APININJAS_API_KEY") as string;
+    const env = await load();
+    const APININJAS_API_KEY = env["APININJAS_API_KEY"];
     const quoteResponse = await fetch("https://api.api-ninjas.com/v1/quotes", {
       headers: { "X-Api-Key": APININJAS_API_KEY },
     });
@@ -20,8 +21,9 @@ const fetchQuote = async () => {
 };
 
 const fetchAuthorImage = async (authorName: string) => {
-  const GOOGLE_SEARCH_API_KEY = Deno.env.get("GOOGLE_SEARCH_API_KEY");
-  const GOOGLE_SEARCH_ENGINE_ID = Deno.env.get("GOOGLE_SEARCH_ENGINE_ID");
+  const env = await load();
+  const GOOGLE_SEARCH_API_KEY = env["GOOGLE_SEARCH_API_KEY"];
+  const GOOGLE_SEARCH_ENGINE_ID = env["GOOGLE_SEARCH_ENGINE_ID"];
 
   const imageResponse = await fetch(
     `https://customsearch.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${authorName}&num=1&searchType=image&imgSize=xlarge`

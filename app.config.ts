@@ -1,3 +1,5 @@
+import { ClientEnv } from "./.env.js";
+
 module.exports = {
   name: "DailyQuotes",
   slug: "DailyQuotes",
@@ -23,7 +25,7 @@ module.exports = {
   web: {
     // favicon: "./assets/favicon.png",
   },
-  // extra: {
-  //   ...ClientEnv,
-  // },
+  extra: {
+    ...ClientEnv,
+  },
 };
