@@ -7,6 +7,7 @@ import {
   Platform,
   ImageBackground,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { useTheme, ActivityIndicator, MD3LightTheme } from "react-native-paper";
 import Constants from "expo-constants";
@@ -27,8 +28,7 @@ const generateBoxShadowStyles = (theme: MD3LightTheme) => {
     };
   } else if (Platform.OS === "android") {
     return {
-      elevation: 17,
-      shadowColor: theme.colors.secondary,
+      elevation: 5,
     };
   } else if (Platform.OS === "web") {
     return {
@@ -119,6 +119,7 @@ export const Quote = () => {
         width: "100%",
         height: "100%",
         backgroundColor: theme.colors.primary,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
       <View
@@ -127,7 +128,7 @@ export const Quote = () => {
           height: "100%",
           alignItems: "flex-start",
           padding: 20,
-          paddingBottom: 10,
+          paddingBottom: 25,
           paddingTop: 15,
         }}
       >
