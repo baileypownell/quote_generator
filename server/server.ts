@@ -34,7 +34,6 @@ const fetchAuthorImage = async (authorName: string) => {
 };
 
 const determineQuoteOfTheDay = async () => {
-  console.log("determineQuoteOfTheDay()");
   try {
     const quoteOfTheDay = await fetchQuote();
     const selectedQuote = quoteOfTheDay[0];
