@@ -1,4 +1,5 @@
-import { daily, load } from "./deps.ts";
+import { load, cron } from "./deps.ts";
+import { daily, everyMinute } from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
 import Quote from "./quote.ts";
 
 const todaysQuote = new Quote();
@@ -54,10 +55,13 @@ const determineQuoteOfTheDay = async () => {
   }
 };
 
-determineQuoteOfTheDay();
 daily(() => {
+  console.log('daily() function ran in UTC time (Date.now()): ', Date.now())
   determineQuoteOfTheDay();
 });
+
+everyMinute(() => { console.log(Date.now()) });
+cron("0 0 * * *", () => console.log("cron", Date.now()));
 
 const handler = (request: Request): any => {
   if (request.url.split("/")[3] === "quote") {
