@@ -18,7 +18,7 @@ type Quote = {
   category: string;
 };
 
-const generateBoxShadowStyles = (theme: MD3LightTheme) => {
+const generateBoxShadowStyles = (theme: typeof MD3LightTheme) => {
   if (Platform.OS === "ios") {
     return {
       shadowColor: theme.colors.secondary,
@@ -26,11 +26,14 @@ const generateBoxShadowStyles = (theme: MD3LightTheme) => {
       shadowOpacity: 0.46,
       shadowRadius: 11.14,
     };
-  } else if (Platform.OS === "android") {
+  }
+  if (Platform.OS === "android") {
     return {
       elevation: 5,
     };
-  } else if (Platform.OS === "web") {
+  }
+  
+  if (Platform.OS === "web") {
     return {
       shadowOffset: { width: 5, height: 5 },
       shadowColor: theme.colors.secondary,
@@ -42,7 +45,7 @@ const generateBoxShadowStyles = (theme: MD3LightTheme) => {
 
 export const Quote = () => {
   const theme = useTheme();
-  const [quote, setQuote] = useState<Quote | null>(null);
+  const [quote, setQuote] = useState<Quote>();
   const [backgroundImage, setBackgroundImage] = useState<any>();
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
@@ -50,7 +53,7 @@ export const Quote = () => {
   const initialize = async () => {
     try {
       const quoteResult = await axios.get(
-        `https://${Constants.expoConfig.extra.SERVER_URL}/quote`
+        `https://${Constants.expoConfig!.extra?.SERVER_URL}/quote`
       );
 
       if (quoteResult.status === 200) {
@@ -143,12 +146,21 @@ export const Quote = () => {
         >
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 26,
               color: theme.colors.secondary,
               fontFamily: "Maven Pro",
+              marginBottom: 5,
             }}
           >
             Quote of the Day
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: theme.colors.secondary,
+              fontFamily: "Maven Pro",
+            }}>
+            {new Date().toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </Text>
         </View>
         <View
@@ -183,12 +195,12 @@ export const Quote = () => {
                   fontSize: 26,
                   color: theme.colors.secondary,
                   fontFamily: "DM Serif Display",
-                  lineHeight: 26 + 26 * 0.75,
+                  // lineHeight: 26 + 26 * 0.75,
                   textAlign: "center",
                   flex: 1,
                 }}
               >
-                {quote.quote}
+                {quote?.quote}
               </Text>
               <View
                 style={{
@@ -237,28 +249,11 @@ export const Quote = () => {
                   fontFamily: "Maven Pro",
                 }}
               >
-                {quote.author}
+                {quote?.author}
               </Text>
             </View>
           </View>
         </View>
-
-        {/* <Button
-          textColor={theme.colors.surfaceVariant}
-          style={{
-            backgroundColor: "#754F5B",
-            ...generateBoxShadowStyles(),
-          }}
-          icon="google"
-          theme={{ roundness: 3 }}
-          accessibilityLabel={`Learn More about ${quote.author}`}
-          mode="contained"
-          onPress={() =>
-            Linking.openURL(`https://google.com/search?q=${quote.author}`)
-          }
-        >
-          {`${quote.author}`}
-        </Button> */}
       </View>
     </SafeAreaView>
   );

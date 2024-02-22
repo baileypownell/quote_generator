@@ -1,5 +1,5 @@
 import { load, cron } from "./deps.ts";
-import { daily, everyMinute } from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
+import { daily } from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
 import Quote from "./quote.ts";
 
 const todaysQuote = new Quote();
@@ -50,18 +50,20 @@ const determineQuoteOfTheDay = async () => {
       throw new Error("No quote of the day could be determined");
     }
   } catch (error) {
-    // learn how to handle errors in deno
+    // how to handle errors in deno?
     console.log(error);
   }
 };
 
+determineQuoteOfTheDay();
 daily(() => {
-  console.log('daily() function ran in UTC time (Date.now()): ', Date.now())
+  // runs at 12AM GMT (UTC)
+  const fiveHours = 18000000; // 5 hour delay to set quote in US Eastern time
+  setTimeout(() => {
+    determineQuoteOfTheDay();
+  }, fiveHours);
   determineQuoteOfTheDay();
 });
-
-everyMinute(() => { console.log(Date.now()) });
-cron("0 0 * * *", () => console.log("cron", Date.now()));
 
 const handler = (request: Request): any => {
   if (request.url.split("/")[3] === "quote") {
