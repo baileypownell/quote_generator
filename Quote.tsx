@@ -120,7 +120,7 @@ export const Quote = () => {
     <SafeAreaView
       style={{
         width: "100%",
-        height: Platform.OS === "web" ? "100%" : "auto",
+        height: "100%",
         backgroundColor: theme.colors.primary,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
