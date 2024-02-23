@@ -1,14 +1,12 @@
-import { ClientEnv } from "./.env.js";
+import { Env } from "./.env.js";
 
 module.exports = {
   name: "DailyQuotes",
   slug: "DailyQuotes",
   version: "1.0.0",
   orientation: "portrait",
-  icon: "./assets/icon.png",
   userInterfaceStyle: "light",
   splash: {
-    image: "./assets/splash.png",
     resizeMode: "contain",
     backgroundColor: "#ffffff",
   },
@@ -17,15 +15,12 @@ module.exports = {
     supportsTablet: true,
   },
   android: {
-    adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#ffffff",
-    },
-  },
-  web: {
-    // favicon: "./assets/favicon.png",
+    package: "com.dailyquotes",
   },
   extra: {
-    ...ClientEnv,
+    ...Env,
+    eas: {
+      projectId: "cd01b8ec-fa98-47a8-a7d1-8da3c7225957",
+    },
   },
 };

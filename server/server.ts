@@ -1,4 +1,4 @@
-import { load, cron } from "./deps.ts";
+import { load } from "./deps.ts";
 import { daily } from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
 import Quote from "./quote.ts";
 

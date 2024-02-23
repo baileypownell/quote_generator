@@ -32,7 +32,7 @@ const generateBoxShadowStyles = (theme: typeof MD3LightTheme) => {
       elevation: 5,
     };
   }
-  
+
   if (Platform.OS === "web") {
     return {
       shadowOffset: { width: 5, height: 5 },
@@ -120,7 +120,7 @@ export const Quote = () => {
     <SafeAreaView
       style={{
         width: "100%",
-        height: Platform.OS === "web" ? "100%" : 'auto',
+        height: Platform.OS === "web" ? "100%" : "auto",
         backgroundColor: theme.colors.primary,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
@@ -159,8 +159,14 @@ export const Quote = () => {
               fontSize: 20,
               color: theme.colors.secondary,
               fontFamily: "Maven Pro",
-            }}>
-            {new Date().toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+            }}
+          >
+            {new Date().toLocaleDateString("en-us", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </Text>
         </View>
         <View
