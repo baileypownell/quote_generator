@@ -1,5 +1,4 @@
 import { Entypo } from "@expo/vector-icons";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Text,
@@ -52,13 +51,14 @@ export const Quote = () => {
 
   const initialize = async () => {
     try {
-      const quoteResult = await axios.get(
+      const quoteResult = await fetch(
         `https://${Constants.expoConfig!.extra?.SERVER_URL}/quote`
       );
+      const result = await quoteResult.json();
 
-      if (quoteResult.status === 200) {
-        setQuote(quoteResult.data.todaysQuote);
-        setBackgroundImage(quoteResult.data.authorImage);
+      if (result) {
+        setQuote(result.todaysQuote);
+        setBackgroundImage(result.authorImage);
         setLoaded(true);
         setError(false);
       } else {
